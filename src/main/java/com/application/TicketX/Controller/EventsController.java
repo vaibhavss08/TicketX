@@ -1,6 +1,5 @@
 package com.application.TicketX.Controller;
 
-import com.application.TicketX.Entity.Event;
 import com.application.TicketX.Model.EventsModel;
 import com.application.TicketX.Service.EventsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +21,8 @@ public class EventsController {
         return eventsService.getAllEvents();
     }
 
-//    @GetMapping("/getEventById")
-//    public Event getEvent(@RequestParam String eventId){
-//        return eventsService.getEvent(eventId);
-//    }
-//
-//    @GetMapping("/getEventByName")
-//    public Event getEventByName(@RequestParam String name){
-//        return eventsService.getEventByName(name);
-//    }
-
+    @GetMapping("/getEventTicketsById")
+    public Integer findEventTicketsByEventId(@RequestParam String eventId){
+        return eventsService.findEventTicketsByEventId(eventId);
+    }
 }

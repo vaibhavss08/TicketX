@@ -20,11 +20,8 @@ public class TicketService {
     public List<TicketsModel> getTicketByUserId(String userId) {
         return ticketRepository.findTicketByUserId(userId);
     }
-    public List<Ticket> buyTicketByEventId(String userId, String eventId, Integer numberOfTickets){
-        return ticketRepository.buyTicketByEventId(userId, eventId,numberOfTickets);
-    }
 
-    public List<Ticket> sellTicketsByEventId(String userId, String eventId, Integer numberOfTickets) {
-        return ticketRepository.sellTicketsByEventId(userId, eventId,numberOfTickets);
+    public Integer getTicketCountByUserIdEventId(String userId, String eventId) {
+        return ticketRepository.getTicketCountByUserIdEventId(userId, eventId);
     }
 }

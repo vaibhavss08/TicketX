@@ -26,13 +26,9 @@ public class TicketController {
     public List<TicketsModel> getTicketByUserId(@RequestParam String userId){
         return ticketService.getTicketByUserId(userId);
     }
-    @GetMapping("/buyTicket")
-    public List<Ticket> buyTicketByEventId(@RequestParam String userId, @RequestParam String eventId,@RequestParam Integer numberOfTickets){
-        return ticketService.buyTicketByEventId(userId, eventId, numberOfTickets);
-    }
 
-    @GetMapping("/sellTicket")
-    public List<Ticket> sellTicketsByEventId(@RequestParam String userId, @RequestParam String eventId,@RequestParam Integer numberOfTickets){
-        return ticketService.sellTicketsByEventId(userId, eventId, numberOfTickets);
+    @GetMapping("/getTicketCountByUserIdEventId")
+    public Integer getTicketCountByUserIdEventId(@RequestParam String userId, @RequestParam String eventId ){
+        return ticketService.getTicketCountByUserIdEventId(userId, eventId);
     }
 }

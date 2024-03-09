@@ -15,4 +15,7 @@ public class EventsService {
     public List<EventsModel> getAllEvents(){
         return eventsRepository.findEvents();
     }
+    public Integer findEventTicketsByEventId(String eventId) {
+        return eventsRepository.findEventTicketsByEventId(eventId);
+    }
 }

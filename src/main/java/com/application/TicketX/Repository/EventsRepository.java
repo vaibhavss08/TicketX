@@ -8,5 +8,5 @@ import java.util.List;
 @Repository
 public interface EventsRepository{
     List<EventsModel> findEvents ();
-
+    Integer findEventTicketsByEventId(String eventId);
 }

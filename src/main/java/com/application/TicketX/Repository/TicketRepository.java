@@ -10,6 +10,5 @@ import java.util.List;
 public interface TicketRepository {
     Ticket findTicketByTicketId(String ticketId);
     List<TicketsModel> findTicketByUserId(String userId);
-    List<Ticket> buyTicketByEventId(String userId, String eventId, Integer numberOfTickets);
-    List<Ticket> sellTicketsByEventId(String userId, String eventId, Integer numberOfTickets);
+    Integer getTicketCountByUserIdEventId(String userId, String eventId);
 }

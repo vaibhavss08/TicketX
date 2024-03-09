@@ -5,19 +5,13 @@ import com.application.TicketX.Model.TicketsModel;
 import com.application.TicketX.Repository.TicketRepository;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.MongoTransactionManager;
-import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.aggregation.*;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionTemplate;
-import java.time.Instant;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -69,63 +63,10 @@ public class TicketRepositoryImpl implements TicketRepository {
     }
 
     @Override
-    public List<Ticket> buyTicketByEventId(String userId, String eventId, Integer numberOfTickets) {
-        Query query = new Query(Criteria.where("eventId").is(eventId).and("status").is(1))
-                .with(Sort.by(Sort.Direction.ASC, "lastUpdatedAt"))
-                .limit(numberOfTickets);
-
-        List<Ticket> results = mongoTemplate.find(query, Ticket.class);
-
-        TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
-        transactionTemplate.execute(new TransactionCallback<Object>() {
-            @Override
-            public Object doInTransaction(TransactionStatus status) {
-                try {
-                    for (Ticket ticket : results) {
-                        Query query = new Query(Criteria.where("_id").is(ticket.getTicketId()));
-                        Update update = new Update()
-                                .set("status", 2)
-                                .set("userId", userId)
-                                .set("lastUpdatedAt", Instant.now());
-                        mongoTemplate.findAndModify(query, update, FindAndModifyOptions.options().returnNew(true), Ticket.class);
-                    }
-                } catch (Exception e) {
-                    status.setRollbackOnly();
-                    throw e;
-                }
-                return null;
-            }
-        });
-        return results;
-    }
-
-    @Override
-    public List<Ticket> sellTicketsByEventId(String userId, String eventId, Integer numberOfTickets) {
-        Query query = new Query(Criteria.where("userId").is(userId).and("eventId").is(eventId).and("status").is(2))
-                .with(Sort.by(Sort.Direction.ASC, "lastUpdatedAt"))
-                .limit(numberOfTickets);
-
-        List<Ticket> results = mongoTemplate.find(query, Ticket.class);
-
-        TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
-        transactionTemplate.execute(new TransactionCallback<Object>() {
-            @Override
-            public Object doInTransaction(TransactionStatus status) {
-                try {
-                    for (Ticket ticket : results) {
-                        Query query = new Query(Criteria.where("_id").is(ticket.getTicketId()));
-                        Update update = new Update()
-                                .set("status",1)
-                                .set("lastUpdatedAt", Instant.now());
-                        mongoTemplate.findAndModify(query, update, FindAndModifyOptions.options().returnNew(true), Ticket.class);
-                    }
-                } catch (Exception e) {
-                    status.setRollbackOnly();
-                    throw e;
-                }
-                return null;
-            }
-        });
-        return results;
+    public Integer getTicketCountByUserIdEventId(String userId, String eventId) {
+        Query query = new Query(Criteria.where("userId").is(userId)
+                .and("eventId").is(eventId)
+                .and("status").is(2));
+        return Math.toIntExact(mongoTemplate.count(query, Ticket.class));
     }
 }
