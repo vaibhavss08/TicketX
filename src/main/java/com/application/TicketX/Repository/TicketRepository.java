@@ -11,4 +11,5 @@ public interface TicketRepository {
     Ticket findTicketByTicketId(String ticketId);
     List<TicketsModel> findTicketByUserId(String userId);
     Integer getTicketCountByUserIdEventId(String userId, String eventId);
+    Integer getPendingTicketCountByUserIdEventId(String userId, String eventId);
 }

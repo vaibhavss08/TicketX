@@ -31,4 +31,9 @@ public class TicketController {
     public Integer getTicketCountByUserIdEventId(@RequestParam String userId, @RequestParam String eventId ){
         return ticketService.getTicketCountByUserIdEventId(userId, eventId);
     }
+
+    @GetMapping("/getPendingTicketCountByUserIdEventId")
+    public Integer getPendingTicketCountByUserIdEventId(@RequestParam String userId, @RequestParam String eventId ){
+        return ticketService.getPendingTicketCountByUserIdEventId(userId, eventId);
+    }
 }

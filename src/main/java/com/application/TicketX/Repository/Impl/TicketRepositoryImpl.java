@@ -69,4 +69,12 @@ public class TicketRepositoryImpl implements TicketRepository {
                 .and("status").is(2));
         return Math.toIntExact(mongoTemplate.count(query, Ticket.class));
     }
+
+    @Override
+    public Integer getPendingTicketCountByUserIdEventId(String userId, String eventId) {
+        Query query = new Query(Criteria.where("userId").is(userId)
+                .and("eventId").is(eventId)
+                .and("status").is(1));
+        return Math.toIntExact(mongoTemplate.count(query, Ticket.class));
+    }
 }

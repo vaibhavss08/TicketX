@@ -24,4 +24,8 @@ public class TicketService {
     public Integer getTicketCountByUserIdEventId(String userId, String eventId) {
         return ticketRepository.getTicketCountByUserIdEventId(userId, eventId);
     }
+
+    public Integer getPendingTicketCountByUserIdEventId(String userId, String eventId) {
+        return ticketRepository.getPendingTicketCountByUserIdEventId(userId, eventId);
+    }
 }
